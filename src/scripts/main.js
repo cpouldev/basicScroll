@@ -3,7 +3,9 @@ import clonedeep from 'lodash.clonedeep'
 import eases from 'eases'
 
 const instances = []
-
+let customScroll = {
+	enabled: false,
+}
 /**
  * Debounces a function that will be triggered many times.
  * @param {Function} fn
@@ -52,10 +54,11 @@ const getTrackedInstances = function(instances) {
  * @returns {Integer} scrollTop
  */
 const getScrollTop = function() {
-
+	if (customScroll.enabled) {
+		return customScroll.scrollTop();
+	}
 	// Use scrollTop because is's faster than getBoundingClientRect()
 	return (document.scrollingElement || document.documentElement).scrollTop
-
 }
 
 /**
@@ -188,6 +191,7 @@ const validate = function(data = {}) {
 
 	}
 
+
 	data.from = parseAbsoluteValue(data.from)
 	data.to = parseAbsoluteValue(data.to)
 
@@ -319,7 +323,6 @@ const setProps = function(elem, props) {
  * @returns {?*}
  */
 const loop = function(style, previousScrollTop) {
-
 	// Continue loop
 	const repeat = () => {
 
@@ -334,7 +337,6 @@ const loop = function(style, previousScrollTop) {
 
 	// Only continue when active instances available
 	if (activeInstances.length === 0) return repeat()
-
 	const scrollTop = getScrollTop()
 
 	// Only continue when scrollTop has changed
@@ -355,8 +357,11 @@ const loop = function(style, previousScrollTop) {
  * @param {Object} data
  * @returns {Object} instance
  */
-export const create = function(data) {
-
+export const create = function(data, _customScroll = {}) {
+	// Validate customScroll
+	if (Object.keys(_customScroll).length !== 0) {
+		customScroll = _customScroll
+	}
 	// Store the parsed data
 	let _data = null
 
