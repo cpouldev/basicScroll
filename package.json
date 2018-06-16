@@ -6,7 +6,7 @@
     "Tobias Reich <tobias@electerious.com>"
   ],
   "description": "Standalone parallax scrolling for mobile and desktop with CSS variables",
-  "main": "src/scripts/main.js",
+  "main": "dist/basicScroll.min.js",
   "keywords": [
     "parallax",
     "scroll",
